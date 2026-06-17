@@ -275,6 +275,7 @@
       </div>
       <input type="password" id="api-key" placeholder="AIzaSy..." autocomplete="off" />
       <div style="font-size:12px;color:var(--text-muted);margin-top:5px;" id="api-hint">Gratis 1.500 request/hari · Google AI Studio · Tidak perlu kartu kredit</div>
+      <div style="font-size:11px;color:var(--amber);background:var(--amber-light);border-radius:6px;padding:5px 10px;margin-top:6px;display:none;" id="groq-note">⚡ Tips Groq: Upload CV dalam format <strong>TXT</strong> (bukan PDF) agar hasil lebih akurat — Groq belum support baca PDF.</div>
     </div>
 
     <!-- STEPS -->
@@ -496,6 +497,8 @@ function selectModel(m) {
   document.getElementById('api-link').textContent = c.linkText;
   document.getElementById('api-hint').textContent = c.hint;
   document.getElementById('api-key').value = '';
+  const note = document.getElementById('groq-note');
+  if (note) note.style.display = m === 'groq' ? 'block' : 'none';
 }
 
 // ─── FILE UPLOAD ───
@@ -548,7 +551,7 @@ function setProgress(id, state) {
 
 // ─── API CALLS ───
 async function callGemini(apiKey, prompt, b64pdf) {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
   let parts = [];
   if (b64pdf) parts.push({ inlineData: { mimeType: 'application/pdf', data: b64pdf } });
   parts.push({ text: prompt });
@@ -560,7 +563,16 @@ async function callGemini(apiKey, prompt, b64pdf) {
 async function callGroq(apiKey, prompt) {
   const r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${apiKey}`},
-    body: JSON.stringify({ model:'llama-3.3-70b-versatile', messages:[{role:'user',content:prompt}], max_tokens:2000, temperature:0.2 })
+    body: JSON.stringify({
+      model:'llama-3.3-70b-versatile',
+      messages:[
+        { role:'system', content:'You are a helpful assistant. You ALWAYS respond with valid JSON only. Never include any text, explanation, apology, or markdown outside the JSON structure. If asked for a JSON object, return only the JSON object. If asked for a JSON array, return only the JSON array.' },
+        { role:'user', content:prompt }
+      ],
+      max_tokens:2000,
+      temperature:0.1,
+      response_format: { type: 'json_object' }
+    })
   });
   if (!r.ok) { const e=await r.json(); throw new Error(e.error?.message||'Groq error'); }
   const d = await r.json();
@@ -578,9 +590,37 @@ async function callAnthropic(apiKey, prompt, b64pdf) {
   const d = await r.json();
   return d.content?.map(c=>c.text||'').join('') || '';
 }
+// Extract JSON robustly from any LLM output
+function extractJSON(raw) {
+  let s = raw.replace(/```json|```/gi, '').trim();
+  const objMatch = s.match(/\{[\s\S]*\}/);
+  const arrMatch = s.match(/\[[\s\S]*\]/);
+  if (objMatch && arrMatch) {
+    s = objMatch.index < arrMatch.index ? objMatch[0] : arrMatch[0];
+  } else if (objMatch) { s = objMatch[0]; }
+  else if (arrMatch) { s = arrMatch[0]; }
+  return JSON.parse(s);
+}
+
+// Groq-specific prompts (json_object mode needs top-level object)
+function groqProfilePrompt(cvText) {
+  return `Extract CV information and return as a single JSON object only. CV Content: ${cvText}
+
+Return this exact structure (empty string if not found):
+{"nama":"full name from CV","ringkasan":"1 sentence profile summary","skills":["skill1","skill2"],"pengalaman":["Job Title at Company"],"pendidikan":"last education","bahasa":["Indonesian","English"],"level":"entry/junior/mid/senior","bidang_utama":"main field 2-3 words","total_pengalaman":"X years"}`;
+}
+
+function groqJobPrompt(jobCount, location, typeFilter, profile) {
+  return `Recommend ${jobCount} job positions for "${location}" for this candidate. Return JSON object with jobs array.
+
+Candidate: ${profile.nama}, ${profile.bidang_utama}, ${profile.level}, skills: ${(profile.skills||[]).join(', ')}, experience: ${(profile.pengalaman||[]).join(' | ')}, education: ${profile.pendidikan}, job type: ${typeFilter}
+
+Return: {"jobs":[{"judul":"Job Title","perusahaan":"Company type","lokasi":"City, Country","tipe":"Full-time","gaji":"salary range","match":85,"alasan":"why suitable 1-2 sentences","skills_dibutuhkan":["skill1","skill2"]}]}`;
+}
+
 async function callAI(apiKey, prompt, b64pdf) {
   if (selectedModel === 'gemini') return callGemini(apiKey, prompt, b64pdf);
-  if (selectedModel === 'groq') return callGroq(apiKey, b64pdf ? `[CV dalam format PDF base64 sudah disertakan]\n\n${prompt}` : prompt);
+  if (selectedModel === 'groq') return callGroq(apiKey, prompt);
   return callAnthropic(apiKey, prompt, b64pdf);
 }
 
@@ -604,36 +644,19 @@ async function startAnalysis() {
   setProgress('p1','active');
 
   const isPdf = fileType === 'pdf';
-  const b64pdf = isPdf ? cvData : null;
-  const cvText = isPdf ? '' : cvData;
+  // Groq cannot read PDFs — only pass b64pdf to Gemini/Anthropic
+  const b64pdf = (isPdf && selectedModel !== 'groq') ? cvData : null;
+  const cvText = isPdf ? (selectedModel === 'groq' ? '[PDF uploaded - extract info from file name and available context]' : '') : cvData;
 
-  // IMPROVED PROFILE EXTRACTION PROMPT
-  const profilePrompt = `Kamu adalah career consultant profesional yang ahli membaca CV.
+  // Build profile prompt
+  const profilePrompt = selectedModel === 'groq'
+    ? groqProfilePrompt(cvText)
+    : `You are a professional CV analyst. Read the CV carefully and extract EXACTLY what is written. Do NOT invent data. Return ONLY valid JSON, no other text, no markdown.
 
-TUGAS: Baca CV berikut dengan SANGAT TELITI dan ekstrak informasi PERSIS sesuai yang tertulis di CV. Jangan mengarang atau mengisi dengan data default seperti "John Doe" atau "Teknologi Informasi". Jika suatu field tidak ada di CV, isi dengan string kosong "".
+{"nama":"","ringkasan":"","skills":[],"pengalaman":[],"pendidikan":"","bahasa":[],"level":"","bidang_utama":"","total_pengalaman":""}
 
-PENTING:
-- "nama": nama lengkap yang BENAR-BENAR ADA di CV
-- "skills": HANYA skill yang BENAR-BENAR disebutkan di CV (kemampuan, keahlian, tools)
-- "pengalaman": jabatan dan perusahaan yang ADA di CV (format: "Jabatan di Perusahaan")
-- "pendidikan": institusi dan jurusan yang ADA di CV
-- "bidang_utama": bidang kerja utama berdasarkan pengalaman & skill di CV (bukan asumsi)
-- "level": perkiraan level berdasarkan pengalaman yang ADA
-- "total_pengalaman": hitung dari tanggal mulai-selesai yang tertulis di CV
-
-Balas HANYA dengan JSON ini (tidak ada teks lain, tidak ada markdown, tidak ada penjelasan):
-{
-  "nama": "",
-  "ringkasan": "",
-  "skills": [],
-  "pengalaman": [],
-  "pendidikan": "",
-  "bahasa": [],
-  "level": "",
-  "bidang_utama": "",
-  "total_pengalaman": ""
-}
-${cvText ? '\n\nISI CV:\n' + cvText : ''}`;
+Rules: nama=exact full name, skills=only explicitly mentioned skills, pengalaman=array of "Title at Company", level=entry/junior/mid/senior, bidang_utama=2-3 word field.
+${cvText ? '\n\nCV CONTENT:\n' + cvText : ''}`;
 
   await delay(300);
   setProgress('p1','done');
@@ -642,11 +665,14 @@ ${cvText ? '\n\nISI CV:\n' + cvText : ''}`;
   let profile;
   try {
     const raw = await callAI(apiKey, profilePrompt, b64pdf);
-    profile = JSON.parse(raw.replace(/```json|```/g,'').trim());
-    if (!profile.nama || profile.nama === 'John Doe') throw new Error('Ekstraksi tidak akurat');
+    const parsed = extractJSON(raw);
+    profile = parsed.nama !== undefined ? parsed : (parsed.profile || Object.values(parsed)[0]);
+    if (!profile || !profile.nama || profile.nama.trim() === '') {
+      throw new Error('Nama tidak terbaca dari CV. Jika pakai Groq, coba upload file TXT bukan PDF.');
+    }
   } catch(e) {
     setProgress('p2','error');
-    document.getElementById('error-box').textContent = '⚠️ Gagal membaca CV dengan akurat. Pastikan file CV tidak terproteksi/scan. Error: ' + e.message;
+    document.getElementById('error-box').textContent = '⚠️ ' + e.message;
     document.getElementById('error-box').classList.add('show');
     document.getElementById('analyze-btn').disabled = false;
     return;
@@ -656,44 +682,25 @@ ${cvText ? '\n\nISI CV:\n' + cvText : ''}`;
   setProgress('p3','active');
 
   const typeFilter = jobType === 'semua' ? 'semua tipe pekerjaan' : jobType;
-  const jobPrompt = `Kamu adalah career consultant dan recruiter berpengalaman.
 
-Berdasarkan profil kandidat berikut, rekomendasikan ${jobCount} posisi loker yang PALING COCOK untuk wilayah ${location}.
+  // Build job prompt
+  const jobPrompt = selectedModel === 'groq'
+    ? groqJobPrompt(jobCount, location, typeFilter, profile)
+    : `You are a career consultant. Recommend ${jobCount} realistic jobs for "${location}". Return ONLY a valid JSON array, no other text.
 
-PROFIL KANDIDAT:
-- Nama: ${profile.nama}
-- Bidang utama: ${profile.bidang_utama}
-- Level: ${profile.level}
-- Total pengalaman: ${profile.total_pengalaman}
-- Skills: ${(profile.skills||[]).join(', ')}
-- Pengalaman kerja: ${(profile.pengalaman||[]).join(' | ')}
-- Pendidikan: ${profile.pendidikan}
-- Bahasa: ${(profile.bahasa||[]).join(', ')}
-- Preferensi tipe: ${typeFilter}
+Candidate: ${profile.nama}, ${profile.bidang_utama}, ${profile.level}, skills: ${(profile.skills||[]).join(', ')}, history: ${(profile.pengalaman||[]).join(' | ')}, education: ${profile.pendidikan}, type: ${typeFilter}
 
-Pertimbangkan skills dan pengalaman NYATA kandidat. Jangan rekomendasikan posisi yang terlalu jauh dari background-nya.
-
-Balas HANYA dengan JSON array (tidak ada teks lain, tidak ada markdown):
-[
-  {
-    "judul": "Job Title yang spesifik dan realistis",
-    "perusahaan": "Tipe/nama perusahaan yang relevan",
-    "lokasi": "Kota, Negara",
-    "tipe": "Full-time/Remote/dll",
-    "gaji": "estimasi range gaji realistis dalam mata uang lokal",
-    "match": 85,
-    "alasan": "Penjelasan spesifik 1-2 kalimat berdasarkan skill dan pengalaman kandidat",
-    "skills_dibutuhkan": ["skill1","skill2","skill3"]
-  }
-]`;
+[{"judul":"","perusahaan":"","lokasi":"","tipe":"","gaji":"","match":85,"alasan":"","skills_dibutuhkan":[""]}]`;
 
   let jobs;
   try {
     const raw2 = await callAI(apiKey, jobPrompt, null);
-    jobs = JSON.parse(raw2.replace(/```json|```/g,'').trim());
+    const parsed2 = extractJSON(raw2);
+    jobs = Array.isArray(parsed2) ? parsed2 : (parsed2.jobs || Object.values(parsed2)[0]);
+    if (!Array.isArray(jobs) || jobs.length === 0) throw new Error('Format tidak valid, coba lagi.');
   } catch(e) {
     setProgress('p3','error');
-    document.getElementById('error-box').textContent = '⚠️ Gagal generate rekomendasi loker. Coba lagi. Error: ' + e.message;
+    document.getElementById('error-box').textContent = '⚠️ Gagal generate rekomendasi: ' + e.message;
     document.getElementById('error-box').classList.add('show');
     document.getElementById('analyze-btn').disabled = false;
     return;
