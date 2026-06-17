@@ -17,57 +17,63 @@
       --amber: #996008; --amber-light: #FEF4E0;
       --red: #B33030; --red-light: #FCEAEA;
       --purple: #6B3FA0; --purple-light: #F3EEFF;
-      --teal: #0E7490; --teal-light: #E0F7FA;
       --radius-sm: 6px; --radius-md: 10px; --radius-lg: 16px; --radius-xl: 24px;
       --shadow-md: 0 4px 16px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
     }
     body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text-primary); min-height: 100vh; font-size: 15px; line-height: 1.6; }
 
+    /* NAV */
     nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 2rem; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
     .nav-brand { font-family: 'Sora', sans-serif; font-size: 17px; font-weight: 700; color: var(--accent); letter-spacing: -0.02em; display: flex; align-items: center; gap: 8px; text-decoration: none; }
-    .nav-badge { font-size: 11px; font-weight: 500; padding: 2px 8px; background: var(--accent-light); color: var(--accent); border-radius: 99px; }
+    .nav-tabs { display: flex; gap: 4px; }
+    .nav-tab { padding: 6px 14px; border-radius: var(--radius-md); font-size: 13px; font-weight: 500; cursor: pointer; border: none; background: transparent; color: var(--text-secondary); transition: all 0.15s; }
+    .nav-tab:hover { background: var(--surface2); color: var(--text-primary); }
+    .nav-tab.active { background: var(--accent-light); color: var(--accent); }
 
-    .hero { padding: 3.5rem 2rem 2.5rem; text-align: center; max-width: 680px; margin: 0 auto; }
+    /* PAGES */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* HERO */
+    .hero { padding: 3rem 2rem 2rem; text-align: center; max-width: 680px; margin: 0 auto; }
     .hero-eyebrow { display: inline-block; font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); background: var(--accent-light); padding: 4px 12px; border-radius: 99px; margin-bottom: 1rem; }
-    .hero h1 { font-family: 'Sora', sans-serif; font-size: clamp(26px, 5vw, 40px); font-weight: 700; line-height: 1.15; letter-spacing: -0.03em; margin-bottom: 1rem; }
+    .hero h1 { font-family: 'Sora', sans-serif; font-size: clamp(24px, 5vw, 38px); font-weight: 700; line-height: 1.15; letter-spacing: -0.03em; margin-bottom: 0.75rem; }
     .hero h1 span { color: var(--accent); }
     .hero p { font-size: 15px; color: var(--text-secondary); max-width: 460px; margin: 0 auto; }
 
+    /* CARD */
     .main-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xl); box-shadow: var(--shadow-md); max-width: 680px; margin: 0 auto 2.5rem; padding: 2rem; }
 
     /* MODEL SELECTOR */
     .model-selector { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 1.5rem; }
-    .model-btn {
-      border: 1.5px solid var(--border); border-radius: var(--radius-md); padding: 10px 8px;
-      text-align: center; cursor: pointer; transition: all 0.18s; background: var(--surface);
-    }
+    .model-btn { border: 1.5px solid var(--border); border-radius: var(--radius-md); padding: 10px 8px; text-align: center; cursor: pointer; transition: all 0.18s; background: var(--surface); }
     .model-btn:hover { border-color: var(--border-strong); background: var(--surface2); }
     .model-btn.selected { border-color: var(--accent); background: var(--accent-light); }
     .model-btn .m-logo { font-size: 18px; margin-bottom: 4px; }
     .model-btn .m-name { font-size: 12px; font-weight: 600; color: var(--text-primary); }
     .model-btn .m-sub { font-size: 10px; color: var(--text-muted); margin-top: 1px; }
     .model-btn.selected .m-name { color: var(--accent); }
-
     .model-btn[data-model="gemini"].selected { border-color: #1a73e8; background: #e8f0fe; }
     .model-btn[data-model="gemini"].selected .m-name { color: #1a73e8; }
     .model-btn[data-model="groq"].selected { border-color: var(--purple); background: var(--purple-light); }
     .model-btn[data-model="groq"].selected .m-name { color: var(--purple); }
+    .free-badge { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 99px; background: var(--green-light); color: var(--green); margin-left: 4px; }
 
     .api-input-wrap { margin-bottom: 1.5rem; }
     .api-label-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
-    .form-label { font-size: 13px; font-weight: 500; color: var(--text-secondary); }
+    .form-label { font-size: 13px; font-weight: 500; color: var(--text-secondary); display: block; margin-bottom: 6px; }
     .api-link { font-size: 12px; color: var(--accent); text-decoration: none; }
     .api-link:hover { text-decoration: underline; }
-    input[type="text"], input[type="password"], select {
+    input[type="text"], input[type="password"], select, textarea {
       width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius-md);
       font-size: 14px; font-family: inherit; background: var(--surface); color: var(--text-primary);
       outline: none; transition: border-color 0.2s;
     }
-    input[type="text"]:focus, input[type="password"]:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(27,86,166,0.1); }
+    input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(27,86,166,0.1); }
+    textarea { resize: vertical; min-height: 80px; }
 
-    .free-badge { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 99px; background: var(--green-light); color: var(--green); margin-left: 6px; vertical-align: middle; }
-
-    .steps { display: flex; gap: 0; margin-bottom: 1.5rem; }
+    /* STEPS */
+    .steps { display: flex; margin-bottom: 1.5rem; }
     .step { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; position: relative; }
     .step::after { content: ''; position: absolute; top: 14px; left: 50%; width: 100%; height: 1px; background: var(--border); z-index: 0; }
     .step:last-child::after { display: none; }
@@ -78,35 +84,40 @@
     .step.active .step-label { color: var(--accent); }
     .step.done .step-label { color: var(--green); }
 
-    .upload-zone { border: 2px dashed var(--border-strong); border-radius: var(--radius-lg); padding: 2.5rem 1.5rem; text-align: center; cursor: pointer; transition: all 0.2s; background: var(--bg); }
+    /* UPLOAD */
+    .upload-zone { border: 2px dashed var(--border-strong); border-radius: var(--radius-lg); padding: 2rem 1.5rem; text-align: center; cursor: pointer; transition: all 0.2s; background: var(--bg); }
     .upload-zone:hover, .upload-zone.drag-over { border-color: var(--accent); background: var(--accent-light); }
-    .upload-icon { width: 48px; height: 48px; background: var(--accent-light); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; }
-    .upload-icon svg { width: 22px; height: 22px; color: var(--accent); }
-    .upload-zone h3 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+    .upload-icon { width: 44px; height: 44px; background: var(--accent-light); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; }
+    .upload-icon svg { width: 20px; height: 20px; color: var(--accent); }
+    .upload-zone h3 { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
     .upload-zone p { font-size: 13px; color: var(--text-secondary); }
-    .upload-formats { margin-top: 8px; font-size: 12px; color: var(--text-muted); }
+    .upload-formats { margin-top: 6px; font-size: 12px; color: var(--text-muted); }
     #file-input { display: none; }
 
     .file-selected { display: none; align-items: center; gap: 10px; background: var(--green-light); border: 1px solid #A8D8BB; border-radius: var(--radius-md); padding: 10px 14px; margin-top: 10px; }
     .file-selected.show { display: flex; }
-    .file-icon { width: 30px; height: 30px; background: var(--green); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .file-icon svg { width: 15px; height: 15px; color: white; }
+    .file-icon-wrap { width: 30px; height: 30px; background: var(--green); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .file-icon-wrap svg { width: 15px; height: 15px; color: white; }
     .file-info { flex: 1; min-width: 0; }
     .file-name { font-size: 13px; font-weight: 500; color: var(--green); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .file-size { font-size: 11px; color: var(--text-muted); }
     .remove-file { background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 4px; border-radius: var(--radius-sm); display: flex; align-items: center; }
-    .remove-file:hover { color: var(--red); background: var(--red-light); }
+    .remove-file:hover { color: var(--red); }
 
-    .form-group { margin-top: 1rem; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-group { margin-top: 1rem; }
 
+    /* BUTTONS */
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 11px 20px; border-radius: var(--radius-md); font-size: 14px; font-weight: 500; font-family: inherit; cursor: pointer; transition: all 0.2s; border: 1px solid transparent; }
     .btn-primary { background: var(--accent); color: white; border-color: var(--accent); width: 100%; margin-top: 1.25rem; padding: 13px; font-size: 15px; }
     .btn-primary:hover { background: var(--accent-dark); }
     .btn-primary:disabled { opacity: 0.45; cursor: not-allowed; }
     .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-secondary); }
     .btn-outline:hover { border-color: var(--border-strong); color: var(--text-primary); background: var(--surface2); }
+    .btn-green { background: var(--green); color: white; border-color: var(--green); }
+    .btn-green:hover { background: #1d5c35; }
 
+    /* PROGRESS */
     .progress-wrap { display: none; margin-top: 1rem; }
     .progress-wrap.show { display: block; }
     .progress-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: var(--radius-md); background: var(--surface2); font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; transition: all 0.3s; }
@@ -119,6 +130,7 @@
 
     .divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
 
+    /* RESULTS */
     .profile-section { display: none; animation: fadeUp 0.4s ease; }
     .profile-section.show { display: block; }
     @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -140,7 +152,7 @@
     .jobs-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 1rem; }
     .jobs-count { font-size: 12px; color: var(--text-muted); font-weight: 500; }
 
-    .job-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 10px; transition: box-shadow 0.2s, border-color 0.2s; animation: fadeUp 0.4s ease; }
+    .job-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 10px; transition: box-shadow 0.2s; animation: fadeUp 0.4s ease; }
     .job-card:hover { box-shadow: var(--shadow-md); border-color: var(--border-strong); }
     .job-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 6px; }
     .job-title { font-size: 15px; font-weight: 600; }
@@ -151,35 +163,69 @@
     .match-low { background: var(--surface2); color: var(--text-secondary); }
     .job-meta { display: flex; flex-wrap: wrap; gap: 12px; margin: 8px 0; }
     .meta-item { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--text-secondary); }
-    .meta-item svg { width: 13px; height: 13px; flex-shrink: 0; }
+    .meta-item svg { width: 13px; height: 13px; }
     .job-reason { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 10px 0; border-top: 1px solid var(--border); margin-top: 8px; }
     .job-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; flex-wrap: wrap; gap: 8px; }
     .job-links { display: flex; gap: 6px; }
     .link-btn { display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 500; text-decoration: none; border: 1px solid var(--border); background: var(--surface); color: var(--text-primary); cursor: pointer; transition: all 0.15s; }
-    .link-btn:hover { background: var(--surface2); border-color: var(--border-strong); }
-    .link-btn.primary-link { background: var(--accent); color: white; border-color: var(--accent); }
-    .link-btn.primary-link:hover { background: var(--accent-dark); }
+    .link-btn:hover { background: var(--surface2); }
+    .link-btn.pl { background: var(--accent); color: white; border-color: var(--accent); }
     .link-btn svg { width: 12px; height: 12px; }
 
     .reset-section { display: none; text-align: center; padding: 1rem 0 0; }
     .reset-section.show { display: block; }
-
     .error-box { background: var(--red-light); border: 1px solid #F0B0B0; border-radius: var(--radius-md); padding: 12px 16px; font-size: 13px; color: var(--red); margin-top: 1rem; display: none; }
     .error-box.show { display: block; }
 
-    footer { text-align: center; padding: 2rem; font-size: 12px; color: var(--text-muted); }
+    /* CV MAKER PAGE */
+    .cv-maker-wrap { max-width: 900px; margin: 0 auto 3rem; padding: 0 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start; }
+    .cv-form-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xl); box-shadow: var(--shadow-md); padding: 1.5rem; }
+    .cv-preview-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xl); box-shadow: var(--shadow-md); padding: 1.5rem; position: sticky; top: 72px; }
 
-    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--text-primary); color: white; padding: 10px 20px; border-radius: 99px; font-size: 13px; font-weight: 500; transition: transform 0.3s ease; z-index: 999; white-space: nowrap; }
+    .form-section-title { font-size: 13px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.06em; margin: 1.25rem 0 0.75rem; padding-bottom: 6px; border-bottom: 2px solid var(--accent-light); }
+    .form-section-title:first-child { margin-top: 0; }
+    .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+    .input-group { margin-bottom: 10px; }
+    .input-group label { font-size: 12px; font-weight: 500; color: var(--text-secondary); display: block; margin-bottom: 4px; }
+    .input-group input, .input-group textarea, .input-group select { font-size: 13px; padding: 8px 10px; }
+    .add-btn { font-size: 12px; padding: 6px 12px; border-radius: var(--radius-sm); border: 1px dashed var(--border-strong); background: transparent; color: var(--accent); cursor: pointer; width: 100%; margin-top: 4px; }
+    .add-btn:hover { background: var(--accent-light); }
+    .entry-block { background: var(--surface2); border-radius: var(--radius-md); padding: 10px 12px; margin-bottom: 8px; position: relative; }
+    .entry-block .remove-entry { position: absolute; top: 8px; right: 8px; background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 16px; line-height: 1; }
+    .entry-block .remove-entry:hover { color: var(--red); }
+    .bullet-list { list-style: none; padding: 0; }
+    .bullet-item-wrap { display: flex; gap: 6px; margin-bottom: 6px; }
+    .bullet-item-wrap input { flex: 1; font-size: 13px; padding: 6px 10px; }
+    .bullet-item-wrap button { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 16px; padding: 0 4px; }
+    .bullet-item-wrap button:hover { color: var(--red); }
+
+    /* CV PREVIEW (Harvard style) */
+    .cv-preview-inner { font-family: Arial, sans-serif; font-size: 11px; line-height: 1.5; color: #1A1916; }
+    .cv-preview-inner .cv-name { text-align: center; font-size: 20px; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .cv-preview-inner .cv-contact { text-align: center; font-size: 10px; color: #555; margin-bottom: 6px; }
+    .cv-preview-inner .cv-hr { border: none; border-top: 2px solid #1B56A6; margin: 6px 0 10px; }
+    .cv-preview-inner .cv-section-title { font-size: 10px; font-weight: 700; color: #1B56A6; letter-spacing: 0.1em; text-transform: uppercase; border-bottom: 1.5px solid #1B56A6; padding-bottom: 2px; margin: 10px 0 5px; }
+    .cv-preview-inner .cv-entry-head { display: flex; justify-content: space-between; font-weight: 700; font-size: 11px; margin-bottom: 1px; }
+    .cv-preview-inner .cv-entry-sub { display: flex; justify-content: space-between; font-style: italic; font-size: 10px; color: #555; margin-bottom: 3px; }
+    .cv-preview-inner .cv-bullet { padding-left: 12px; position: relative; font-size: 10px; color: #333; margin-bottom: 2px; }
+    .cv-preview-inner .cv-bullet::before { content: "•"; position: absolute; left: 2px; }
+    .cv-preview-inner .cv-desc { font-size: 10px; color: #555; margin-bottom: 3px; }
+    .cv-preview-inner .cv-skill-row { font-size: 10px; margin-bottom: 3px; }
+    .cv-preview-inner .cv-skill-label { font-weight: 700; }
+    .preview-label { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
+
+    footer { text-align: center; padding: 2rem; font-size: 12px; color: var(--text-muted); }
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--text-primary); color: white; padding: 10px 20px; border-radius: 99px; font-size: 13px; font-weight: 500; transition: transform 0.3s; z-index: 999; white-space: nowrap; }
     .toast.show { transform: translateX(-50%) translateY(0); }
 
-    @media (max-width: 600px) {
+    @media (max-width: 700px) {
       nav { padding: 0 1rem; }
       .hero { padding: 2rem 1rem 1.5rem; }
       .main-card { margin: 0 1rem 2rem; padding: 1.25rem; }
-      .form-row { grid-template-columns: 1fr; }
+      .form-row, .input-row { grid-template-columns: 1fr; }
       .profile-grid { grid-template-columns: 1fr; }
-      .model-selector { grid-template-columns: 1fr 1fr 1fr; }
-      .job-footer { flex-direction: column; }
+      .cv-maker-wrap { grid-template-columns: 1fr; padding: 0 1rem; }
+      .cv-preview-card { position: static; }
     }
   </style>
 </head>
@@ -187,162 +233,229 @@
 
 <nav>
   <a class="nav-brand" href="#">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px;">
-      <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/>
-    </svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
     CV Job Matcher
   </a>
-  <span class="nav-badge">Multi-AI</span>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('matcher')">🔍 Job Matcher</button>
+    <button class="nav-tab" onclick="showPage('cvmaker')">📄 CV Maker</button>
+  </div>
 </nav>
 
-<div class="hero">
-  <span class="hero-eyebrow">AI Career Tool</span>
-  <h1>Upload CV, dapat<br><span>loker yang tepat</span></h1>
-  <p>Pilih AI model favoritmu, upload CV, dan dapatkan rekomendasi loker yang dipersonalisasi untuk wilayah pilihanmu.</p>
+<!-- ═══════════════════════════════════════════════ -->
+<!-- PAGE 1: JOB MATCHER -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page active" id="page-matcher">
+  <div class="hero">
+    <span class="hero-eyebrow">AI Career Tool</span>
+    <h1>Upload CV, dapat<br><span>loker yang tepat</span></h1>
+    <p>Pilih AI model, upload CV, dan dapatkan rekomendasi loker yang dipersonalisasi untuk wilayah pilihanmu.</p>
+  </div>
+
+  <div class="main-card">
+    <!-- MODEL -->
+    <div class="form-label" style="margin-bottom:10px;">Pilih AI Model</div>
+    <div class="model-selector">
+      <div class="model-btn selected" data-model="gemini" onclick="selectModel('gemini')">
+        <div class="m-logo">🔵</div><div class="m-name">Gemini</div><div class="m-sub">Google<span class="free-badge">FREE</span></div>
+      </div>
+      <div class="model-btn" data-model="groq" onclick="selectModel('groq')">
+        <div class="m-logo">⚡</div><div class="m-name">Groq</div><div class="m-sub">Llama 3<span class="free-badge">FREE</span></div>
+      </div>
+      <div class="model-btn" data-model="anthropic" onclick="selectModel('anthropic')">
+        <div class="m-logo">🟠</div><div class="m-name">Claude</div><div class="m-sub">Anthropic</div>
+      </div>
+    </div>
+
+    <!-- API KEY -->
+    <div class="api-input-wrap">
+      <div class="api-label-row">
+        <label class="form-label" id="api-label" style="margin:0;">Google Gemini API Key</label>
+        <a class="api-link" id="api-link" href="https://aistudio.google.com/apikey" target="_blank">Dapatkan gratis →</a>
+      </div>
+      <input type="password" id="api-key" placeholder="AIzaSy..." autocomplete="off" />
+      <div style="font-size:12px;color:var(--text-muted);margin-top:5px;" id="api-hint">Gratis 1.500 request/hari · Google AI Studio · Tidak perlu kartu kredit</div>
+    </div>
+
+    <!-- STEPS -->
+    <div class="steps">
+      <div class="step active" data-step="1"><div class="step-num">1</div><div class="step-label">Upload CV</div></div>
+      <div class="step" data-step="2"><div class="step-num">2</div><div class="step-label">Preferensi</div></div>
+      <div class="step" data-step="3"><div class="step-num">3</div><div class="step-label">Analisis</div></div>
+      <div class="step" data-step="4"><div class="step-num">4</div><div class="step-label">Hasil</div></div>
+    </div>
+
+    <!-- UPLOAD -->
+    <div class="upload-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
+      <div class="upload-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9,15 12,12 15,15"/></svg>
+      </div>
+      <h3>Seret CV ke sini atau klik untuk pilih file</h3>
+      <p>AI akan membaca dan menganalisis isi CV secara otomatis</p>
+      <p class="upload-formats">PDF · TXT · Maks 10 MB</p>
+    </div>
+    <input type="file" id="file-input" accept=".pdf,.txt" />
+
+    <div class="file-selected" id="file-selected">
+      <div class="file-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg></div>
+      <div class="file-info">
+        <div class="file-name" id="file-name">dokumen.pdf</div>
+        <div class="file-size" id="file-size">0 KB</div>
+      </div>
+      <button class="remove-file" onclick="removeFile(event)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Wilayah yang dituju</label>
+      <input type="text" id="location" placeholder="cth: Jakarta, Australia, Singapore, Malaysia..." />
+    </div>
+    <div class="form-row" style="margin-top:10px;">
+      <div>
+        <label class="form-label">Tipe pekerjaan</label>
+        <select id="job-type">
+          <option value="semua">Semua tipe</option>
+          <option value="Full-time">Full-time</option>
+          <option value="Part-time">Part-time</option>
+          <option value="Remote">Remote / WFH</option>
+          <option value="Contract">Contract / Freelance</option>
+          <option value="Internship">Magang / Internship</option>
+        </select>
+      </div>
+      <div>
+        <label class="form-label">Jumlah rekomendasi</label>
+        <select id="job-count">
+          <option value="5">5 loker</option>
+          <option value="8" selected>8 loker</option>
+          <option value="10">10 loker</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" id="analyze-btn" disabled onclick="startAnalysis()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Analisis CV &amp; Cari Loker
+    </button>
+
+    <div class="error-box" id="error-box"></div>
+
+    <div class="progress-wrap" id="progress-wrap">
+      <div class="progress-item" id="p1"><div class="p-icon">○</div><span>Membaca dan memproses CV...</span></div>
+      <div class="progress-item" id="p2"><div class="p-icon">○</div><span>Mengekstrak profil, skill, dan pengalaman dari CV...</span></div>
+      <div class="progress-item" id="p3"><div class="p-icon">○</div><span>Mencocokkan dengan peluang kerja di <span id="p3-loc">wilayah target</span>...</span></div>
+      <div class="progress-item" id="p4"><div class="p-icon">○</div><span>Menyusun rekomendasi final...</span></div>
+    </div>
+
+    <div class="profile-section" id="profile-section">
+      <div class="divider"></div>
+      <div class="section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Profil yang diekstrak dari CV
+      </div>
+      <div class="profile-grid" id="profile-grid"></div>
+      <div style="margin-bottom:10px;"><div class="form-label" style="margin-bottom:7px;">Skills</div><div class="chips-wrap" id="skills-chips"></div></div>
+      <div><div class="form-label" style="margin-bottom:7px;">Pengalaman</div><div class="chips-wrap" id="exp-chips"></div></div>
+      <div class="divider"></div>
+      <div class="jobs-header">
+        <div class="section-title" style="margin-bottom:0;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+          Rekomendasi Loker
+        </div>
+        <span class="jobs-count" id="jobs-count"></span>
+      </div>
+      <div id="jobs-container"></div>
+    </div>
+
+    <div class="reset-section" id="reset-section">
+      <button class="btn btn-outline" onclick="resetAll()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.65"/></svg>
+        Cari Lagi
+      </button>
+    </div>
+  </div>
 </div>
 
-<div class="main-card">
-
-  <!-- MODEL SELECTOR -->
-  <div class="form-label" style="margin-bottom:10px;">Pilih AI Model</div>
-  <div class="model-selector">
-    <div class="model-btn selected" data-model="gemini" onclick="selectModel('gemini')">
-      <div class="m-logo">🔵</div>
-      <div class="m-name">Gemini</div>
-      <div class="m-sub">Google <span class="free-badge">FREE</span></div>
-    </div>
-    <div class="model-btn" data-model="groq" onclick="selectModel('groq')">
-      <div class="m-logo">⚡</div>
-      <div class="m-name">Groq</div>
-      <div class="m-sub">Llama 3 <span class="free-badge">FREE</span></div>
-    </div>
-    <div class="model-btn" data-model="anthropic" onclick="selectModel('anthropic')">
-      <div class="m-logo">🟠</div>
-      <div class="m-name">Claude</div>
-      <div class="m-sub">Anthropic</div>
-    </div>
+<!-- ═══════════════════════════════════════════════ -->
+<!-- PAGE 2: CV MAKER -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page" id="page-cvmaker">
+  <div class="hero">
+    <span class="hero-eyebrow">CV Maker</span>
+    <h1>Buat CV <span>Format Harvard</span></h1>
+    <p>Isi form di sebelah kiri, preview CV-mu langsung tampil di sebelah kanan. Download PDF siap pakai.</p>
   </div>
 
-  <!-- API KEY -->
-  <div class="api-input-wrap">
-    <div class="api-label-row">
-      <label class="form-label" id="api-label">Google Gemini API Key</label>
-      <a class="api-link" id="api-link" href="https://aistudio.google.com/apikey" target="_blank">Dapatkan gratis →</a>
-    </div>
-    <input type="password" id="api-key" placeholder="AIzaSy..." autocomplete="off" />
-    <div style="font-size:12px;color:var(--text-muted);margin-top:5px;" id="api-hint">
-      Gratis 1.500 request/hari · Daftar di Google AI Studio · Tidak perlu kartu kredit
-    </div>
-  </div>
+  <div class="cv-maker-wrap">
+    <!-- FORM KIRI -->
+    <div class="cv-form-card">
 
-  <!-- STEPS -->
-  <div class="steps">
-    <div class="step active" data-step="1"><div class="step-num">1</div><div class="step-label">Upload CV</div></div>
-    <div class="step" data-step="2"><div class="step-num">2</div><div class="step-label">Preferensi</div></div>
-    <div class="step" data-step="3"><div class="step-num">3</div><div class="step-label">Analisis</div></div>
-    <div class="step" data-step="4"><div class="step-num">4</div><div class="step-label">Hasil</div></div>
-  </div>
-
-  <!-- UPLOAD -->
-  <div class="upload-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
-    <div class="upload-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9,15 12,12 15,15"/>
-      </svg>
-    </div>
-    <h3>Seret CV ke sini atau klik untuk pilih file</h3>
-    <p>AI akan membaca dan menganalisis isi CV secara otomatis</p>
-    <p class="upload-formats">PDF · TXT · Maks 10 MB</p>
-  </div>
-  <input type="file" id="file-input" accept=".pdf,.txt" />
-
-  <div class="file-selected" id="file-selected">
-    <div class="file-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
-    </div>
-    <div class="file-info">
-      <div class="file-name" id="file-name">dokumen.pdf</div>
-      <div class="file-size" id="file-size">0 KB</div>
-    </div>
-    <button class="remove-file" onclick="removeFile(event)" title="Hapus">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-    </button>
-  </div>
-
-  <!-- FORM -->
-  <div class="form-group">
-    <label class="form-label">Wilayah yang dituju</label>
-    <input type="text" id="location" placeholder="cth: Jakarta, Australia, Singapore, Malaysia..." />
-  </div>
-  <div class="form-row" style="margin-top:10px;">
-    <div>
-      <label class="form-label" style="display:block;margin-bottom:6px;">Tipe pekerjaan</label>
-      <select id="job-type">
-        <option value="semua">Semua tipe</option>
-        <option value="Full-time">Full-time</option>
-        <option value="Part-time">Part-time</option>
-        <option value="Remote">Remote / WFH</option>
-        <option value="Contract">Contract / Freelance</option>
-        <option value="Internship">Magang / Internship</option>
-      </select>
-    </div>
-    <div>
-      <label class="form-label" style="display:block;margin-bottom:6px;">Jumlah rekomendasi</label>
-      <select id="job-count">
-        <option value="5">5 loker</option>
-        <option value="8" selected>8 loker</option>
-        <option value="10">10 loker</option>
-      </select>
-    </div>
-  </div>
-
-  <button class="btn btn-primary" id="analyze-btn" disabled onclick="startAnalysis()">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    Analisis CV &amp; Cari Loker
-  </button>
-
-  <div class="error-box" id="error-box"></div>
-
-  <!-- PROGRESS -->
-  <div class="progress-wrap" id="progress-wrap">
-    <div class="progress-item" id="p1"><div class="p-icon">○</div><span>Membaca dan memproses CV...</span></div>
-    <div class="progress-item" id="p2"><div class="p-icon">○</div><span>Mengekstrak profil, skill, dan pengalaman...</span></div>
-    <div class="progress-item" id="p3"><div class="p-icon">○</div><span>Mencocokkan dengan peluang kerja di <span id="p3-loc">wilayah target</span>...</span></div>
-    <div class="progress-item" id="p4"><div class="p-icon">○</div><span>Menyusun rekomendasi final...</span></div>
-  </div>
-
-  <!-- RESULTS -->
-  <div class="profile-section" id="profile-section">
-    <div class="divider"></div>
-    <div class="section-title">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-      Profil yang diekstrak dari CV
-    </div>
-    <div class="profile-grid" id="profile-grid"></div>
-    <div style="margin-bottom:10px;">
-      <div class="form-label" style="margin-bottom:7px;">Skills</div>
-      <div class="chips-wrap" id="skills-chips"></div>
-    </div>
-    <div>
-      <div class="form-label" style="margin-bottom:7px;">Pengalaman</div>
-      <div class="chips-wrap" id="exp-chips"></div>
-    </div>
-    <div class="divider"></div>
-    <div class="jobs-header">
-      <div class="section-title" style="margin-bottom:0;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
-        Rekomendasi Loker
+      <div class="form-section-title">Informasi Pribadi</div>
+      <div class="input-row">
+        <div class="input-group"><label>Nama Lengkap</label><input type="text" id="cv-nama" placeholder="Damar Fatah Mubin" oninput="updatePreview()" /></div>
+        <div class="input-group"><label>Kota, Provinsi</label><input type="text" id="cv-kota" placeholder="Jakarta Barat, DKI Jakarta" oninput="updatePreview()" /></div>
       </div>
-      <span class="jobs-count" id="jobs-count"></span>
-    </div>
-    <div id="jobs-container"></div>
-  </div>
+      <div class="input-row">
+        <div class="input-group"><label>Nomor HP</label><input type="text" id="cv-hp" placeholder="+62 895 xxxx xxxx" oninput="updatePreview()" /></div>
+        <div class="input-group"><label>Email</label><input type="text" id="cv-email" placeholder="nama@email.com" oninput="updatePreview()" /></div>
+      </div>
+      <div class="input-row">
+        <div class="input-group"><label>LinkedIn (opsional)</label><input type="text" id="cv-linkedin" placeholder="linkedin.com/in/username" oninput="updatePreview()" /></div>
+        <div class="input-group"><label>Portfolio (opsional)</label><input type="text" id="cv-portfolio" placeholder="portfolio.com" oninput="updatePreview()" /></div>
+      </div>
 
-  <div class="reset-section" id="reset-section">
-    <button class="btn btn-outline" onclick="resetAll()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.65"/></svg>
-      Cari Lagi dengan CV Lain
-    </button>
+      <div class="form-section-title">Tentang Saya</div>
+      <div class="input-group">
+        <label>Ringkasan Profil</label>
+        <textarea id="cv-tentang" rows="3" placeholder="Tulis ringkasan singkat tentang dirimu, pengalaman, dan tujuan karir..." oninput="updatePreview()"></textarea>
+      </div>
+
+      <div class="form-section-title">Pengalaman Kerja</div>
+      <div id="exp-entries"></div>
+      <button class="add-btn" onclick="addEntry('exp')">+ Tambah Pengalaman</button>
+
+      <div class="form-section-title">Pendidikan</div>
+      <div id="edu-entries"></div>
+      <button class="add-btn" onclick="addEntry('edu')">+ Tambah Pendidikan</button>
+
+      <div class="form-section-title">Sertifikasi</div>
+      <div id="cert-entries"></div>
+      <button class="add-btn" onclick="addEntry('cert')">+ Tambah Sertifikasi</button>
+
+      <div class="form-section-title">Keahlian</div>
+      <div class="input-row">
+        <div class="input-group"><label>Teknis</label><input type="text" id="skill-teknis" placeholder="Microsoft Office, Excel..." oninput="updatePreview()" /></div>
+        <div class="input-group"><label>Bisnis & Finance</label><input type="text" id="skill-bisnis" placeholder="Financial Analysis, Trading..." oninput="updatePreview()" /></div>
+      </div>
+      <div class="input-row">
+        <div class="input-group"><label>Interpersonal</label><input type="text" id="skill-interpersonal" placeholder="Customer Service, Leadership..." oninput="updatePreview()" /></div>
+        <div class="input-group"><label>Bahasa</label><input type="text" id="skill-bahasa" placeholder="Indonesia (Native), Inggris..." oninput="updatePreview()" /></div>
+      </div>
+
+      <div style="margin-top:1.5rem; display:flex; gap:10px;">
+        <button class="btn btn-primary" style="margin-top:0; flex:1;" onclick="downloadCV()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download PDF
+        </button>
+        <button class="btn btn-outline" style="flex:0 0 auto;" onclick="loadDamarData()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Isi Contoh
+        </button>
+      </div>
+    </div>
+
+    <!-- PREVIEW KANAN -->
+    <div class="cv-preview-card">
+      <div class="preview-label">
+        <span>Preview CV (Format Harvard)</span>
+        <span style="font-size:11px;color:var(--text-muted);">Real-time</span>
+      </div>
+      <div id="cv-preview-box" style="border:1px solid var(--border);border-radius:8px;padding:20px;background:#fff;min-height:400px;">
+        <div class="cv-preview-inner" id="cv-preview-content">
+          <div style="text-align:center;color:var(--text-muted);padding:3rem 1rem;font-size:13px;">
+            Isi form di sebelah kiri untuk melihat preview CV
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -350,81 +463,71 @@
 <div class="toast" id="toast"></div>
 
 <script>
-let cvData = null, fileType = '', selectedModel = 'gemini';
+// ─── PAGE NAV ───
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  event.target.classList.add('active');
+}
 
+// ─── TOAST ───
+function showToast(msg, dur=3000) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), dur);
+}
+
+// ─── MODEL SELECTOR ───
+let selectedModel = 'gemini';
 const MODEL_CONFIG = {
-  gemini: {
-    label: 'Google Gemini API Key',
-    placeholder: 'AIzaSy...',
-    link: 'https://aistudio.google.com/apikey',
-    linkText: 'Dapatkan gratis →',
-    hint: 'Gratis 1.500 request/hari · Google AI Studio · Tidak perlu kartu kredit'
-  },
-  groq: {
-    label: 'Groq API Key',
-    placeholder: 'gsk_...',
-    link: 'https://console.groq.com/keys',
-    linkText: 'Dapatkan gratis →',
-    hint: 'Gratis · Daftar di Groq Console · Tidak perlu kartu kredit'
-  },
-  anthropic: {
-    label: 'Anthropic API Key',
-    placeholder: 'sk-ant-api03-...',
-    link: 'https://console.anthropic.com',
-    linkText: 'Dapatkan di Anthropic Console →',
-    hint: 'Free credit $5 untuk akun baru · console.anthropic.com'
-  }
+  gemini: { label: 'Google Gemini API Key', placeholder: 'AIzaSy...', link: 'https://aistudio.google.com/apikey', linkText: 'Dapatkan gratis →', hint: 'Gratis 1.500 request/hari · Google AI Studio · Tidak perlu kartu kredit' },
+  groq: { label: 'Groq API Key', placeholder: 'gsk_...', link: 'https://console.groq.com/keys', linkText: 'Dapatkan gratis →', hint: 'Gratis · Groq Console · Tidak perlu kartu kredit' },
+  anthropic: { label: 'Anthropic API Key', placeholder: 'sk-ant-api03-...', link: 'https://console.anthropic.com', linkText: 'Anthropic Console →', hint: 'Free credit $5 untuk akun baru' }
 };
-
 function selectModel(m) {
   selectedModel = m;
   document.querySelectorAll('.model-btn').forEach(b => b.classList.remove('selected'));
   document.querySelector(`[data-model="${m}"]`).classList.add('selected');
-  const cfg = MODEL_CONFIG[m];
-  document.getElementById('api-label').textContent = cfg.label;
-  document.getElementById('api-key').placeholder = cfg.placeholder;
-  document.getElementById('api-link').href = cfg.link;
-  document.getElementById('api-link').textContent = cfg.linkText;
-  document.getElementById('api-hint').textContent = cfg.hint;
+  const c = MODEL_CONFIG[m];
+  document.getElementById('api-label').textContent = c.label;
+  document.getElementById('api-key').placeholder = c.placeholder;
+  document.getElementById('api-link').href = c.link;
+  document.getElementById('api-link').textContent = c.linkText;
+  document.getElementById('api-hint').textContent = c.hint;
   document.getElementById('api-key').value = '';
 }
 
-const fileInput = document.getElementById('file-input');
+// ─── FILE UPLOAD ───
+let cvData = null, fileType = '';
 const dropZone = document.getElementById('drop-zone');
-const fileSelected = document.getElementById('file-selected');
-const analyzeBtn = document.getElementById('analyze-btn');
-
+const fileInput = document.getElementById('file-input');
 dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
 dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
 dropZone.addEventListener('drop', e => { e.preventDefault(); dropZone.classList.remove('drag-over'); if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); });
 fileInput.addEventListener('change', () => { if (fileInput.files[0]) handleFile(fileInput.files[0]); });
 
 function handleFile(file) {
-  if (file.size > 10 * 1024 * 1024) { showToast('File terlalu besar. Maks 10 MB.'); return; }
+  if (file.size > 10*1024*1024) { showToast('File terlalu besar. Maks 10 MB.'); return; }
   document.getElementById('file-name').textContent = file.name;
-  document.getElementById('file-size').textContent = (file.size / 1024).toFixed(1) + ' KB';
-  fileSelected.classList.add('show');
+  document.getElementById('file-size').textContent = (file.size/1024).toFixed(1) + ' KB';
+  document.getElementById('file-selected').classList.add('show');
   const reader = new FileReader();
   if (file.type === 'application/pdf' || file.name.endsWith('.pdf')) {
-    fileType = 'pdf';
-    reader.readAsDataURL(file);
+    fileType = 'pdf'; reader.readAsDataURL(file);
     reader.onload = () => { cvData = reader.result.split(',')[1]; checkReady(); };
   } else {
-    fileType = 'text';
-    reader.readAsText(file);
+    fileType = 'text'; reader.readAsText(file);
     reader.onload = () => { cvData = reader.result; checkReady(); };
   }
 }
-
 function removeFile(e) {
-  e.stopPropagation();
-  cvData = null; fileType = ''; fileInput.value = '';
-  fileSelected.classList.remove('show');
-  checkReady();
+  e.stopPropagation(); cvData = null; fileType = ''; fileInput.value = '';
+  document.getElementById('file-selected').classList.remove('show'); checkReady();
 }
+function checkReady() { document.getElementById('analyze-btn').disabled = !cvData; }
 
-function checkReady() { analyzeBtn.disabled = !cvData; }
-
+// ─── STEPS ───
 function setStep(n) {
   document.querySelectorAll('.step').forEach(s => {
     const num = parseInt(s.dataset.step);
@@ -433,160 +536,187 @@ function setStep(n) {
     if (num === n) s.classList.add('active');
   });
 }
-
 function setProgress(id, state) {
   const el = document.getElementById(id);
   el.classList.remove('active','done','error');
   el.classList.add(state);
   if (state === 'active') el.querySelector('.p-icon').innerHTML = '<span class="spinner"></span>';
   else if (state === 'done') el.querySelector('.p-icon').innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;color:var(--green)"><polyline points="20 6 9 17 4 12"/></svg>`;
-  else if (state === 'error') el.querySelector('.p-icon').innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+  else if (state === 'error') el.querySelector('.p-icon').innerHTML = `✕`;
   else el.querySelector('.p-icon').innerHTML = '○';
 }
 
-function showToast(msg, dur = 3000) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), dur);
-}
-
-function showError(msg) {
-  const el = document.getElementById('error-box');
-  el.textContent = '⚠️ ' + msg;
-  el.classList.add('show');
-}
-
-function hideError() { document.getElementById('error-box').classList.remove('show'); }
-
-async function callGemini(apiKey, prompt, base64Pdf) {
-  const model = 'gemini-2.0-flash';
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+// ─── API CALLS ───
+async function callGemini(apiKey, prompt, b64pdf) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
   let parts = [];
-  if (base64Pdf) {
-    parts.push({ inlineData: { mimeType: 'application/pdf', data: base64Pdf } });
-  }
+  if (b64pdf) parts.push({ inlineData: { mimeType: 'application/pdf', data: b64pdf } });
   parts.push({ text: prompt });
-  const body = { contents: [{ parts }] };
-  const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-  if (!r.ok) { const e = await r.json(); throw new Error(e.error?.message || 'Gemini API error'); }
+  const r = await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ contents:[{parts}] }) });
+  if (!r.ok) { const e=await r.json(); throw new Error(e.error?.message||'Gemini error'); }
   const d = await r.json();
   return d.candidates?.[0]?.content?.parts?.[0]?.text || '';
 }
-
 async function callGroq(apiKey, prompt) {
-  const url = 'https://api.groq.com/openai/v1/chat/completions';
-  const body = {
-    model: 'llama-3.3-70b-versatile',
-    messages: [{ role: 'user', content: prompt }],
-    max_tokens: 2000, temperature: 0.3
-  };
-  const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` }, body: JSON.stringify(body) });
-  if (!r.ok) { const e = await r.json(); throw new Error(e.error?.message || 'Groq API error'); }
+  const r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${apiKey}`},
+    body: JSON.stringify({ model:'llama-3.3-70b-versatile', messages:[{role:'user',content:prompt}], max_tokens:2000, temperature:0.2 })
+  });
+  if (!r.ok) { const e=await r.json(); throw new Error(e.error?.message||'Groq error'); }
   const d = await r.json();
   return d.choices?.[0]?.message?.content || '';
 }
-
-async function callAnthropic(apiKey, prompt, base64Pdf) {
-  const url = 'https://api.anthropic.com/v1/messages';
+async function callAnthropic(apiKey, prompt, b64pdf) {
   let content = [];
-  if (base64Pdf) content.push({ type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: base64Pdf } });
-  content.push({ type: 'text', text: prompt });
-  const body = { model: 'claude-sonnet-4-6', max_tokens: 2000, messages: [{ role: 'user', content }] };
-  const r = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-calls': 'true' },
-    body: JSON.stringify(body)
+  if (b64pdf) content.push({ type:'document', source:{ type:'base64', media_type:'application/pdf', data:b64pdf } });
+  content.push({ type:'text', text:prompt });
+  const r = await fetch('https://api.anthropic.com/v1/messages', {
+    method:'POST', headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-calls':'true'},
+    body: JSON.stringify({ model:'claude-sonnet-4-6', max_tokens:2000, messages:[{role:'user',content}] })
   });
-  if (!r.ok) { const e = await r.json(); throw new Error(e.error?.message || 'Anthropic API error'); }
+  if (!r.ok) { const e=await r.json(); throw new Error(e.error?.message||'Anthropic error'); }
   const d = await r.json();
-  return d.content?.map(c => c.text || '').join('') || '';
+  return d.content?.map(c=>c.text||'').join('') || '';
+}
+async function callAI(apiKey, prompt, b64pdf) {
+  if (selectedModel === 'gemini') return callGemini(apiKey, prompt, b64pdf);
+  if (selectedModel === 'groq') return callGroq(apiKey, b64pdf ? `[CV dalam format PDF base64 sudah disertakan]\n\n${prompt}` : prompt);
+  return callAnthropic(apiKey, prompt, b64pdf);
 }
 
-async function callAI(apiKey, prompt, base64Pdf) {
-  if (selectedModel === 'gemini') return callGemini(apiKey, prompt, base64Pdf);
-  if (selectedModel === 'groq') {
-    const fullPrompt = base64Pdf ? `[Catatan: CV dikirim dalam format PDF base64, analisis berdasarkan konteks berikut]\n\n${prompt}` : prompt;
-    return callGroq(apiKey, fullPrompt);
-  }
-  if (selectedModel === 'anthropic') return callAnthropic(apiKey, prompt, base64Pdf);
-}
-
+// ─── ANALYSIS ───
 async function startAnalysis() {
   const apiKey = document.getElementById('api-key').value.trim();
-  if (!apiKey) { showToast('Masukkan API Key dulu ya!'); return; }
-  if (!cvData) { showToast('Upload CV dulu!'); return; }
-
+  if (!apiKey) { showToast('Masukkan API Key dulu!'); return; }
   const location = document.getElementById('location').value.trim() || 'Indonesia';
   const jobType = document.getElementById('job-type').value;
   const jobCount = parseInt(document.getElementById('job-count').value);
 
-  hideError();
+  document.getElementById('error-box').classList.remove('show');
   document.getElementById('p3-loc').textContent = location;
   document.getElementById('progress-wrap').classList.add('show');
   document.getElementById('profile-section').classList.remove('show');
   document.getElementById('reset-section').classList.remove('show');
   document.getElementById('jobs-container').innerHTML = '';
-  analyzeBtn.disabled = true;
+  document.getElementById('analyze-btn').disabled = true;
   setStep(3);
-  ['p1','p2','p3','p4'].forEach(id => setProgress(id, 'idle'));
-  setProgress('p1', 'active');
+  ['p1','p2','p3','p4'].forEach(id => setProgress(id,'idle'));
+  setProgress('p1','active');
 
   const isPdf = fileType === 'pdf';
+  const b64pdf = isPdf ? cvData : null;
   const cvText = isPdf ? '' : cvData;
-  const pdfBase64 = isPdf ? cvData : null;
 
-  const profilePrompt = `Kamu adalah career consultant profesional. Analisis CV berikut dan ekstrak dalam format JSON saja (tidak ada markdown, tidak ada kalimat lain):\n{\n  "nama": "nama lengkap",\n  "ringkasan": "1 kalimat ringkasan profil karir",\n  "skills": ["skill1","skill2",...maks 12],\n  "pengalaman": ["Jabatan di Perusahaan",...maks 5],\n  "pendidikan": "pendidikan terakhir",\n  "bahasa": ["Bahasa Indonesia","English",...],\n  "level": "entry/junior/mid/senior/manager",\n  "bidang_utama": "bidang karir utama 2-3 kata",\n  "total_pengalaman": "x tahun"\n}${cvText ? '\n\nISI CV:\n' + cvText : ''}`;
+  // IMPROVED PROFILE EXTRACTION PROMPT
+  const profilePrompt = `Kamu adalah career consultant profesional yang ahli membaca CV.
+
+TUGAS: Baca CV berikut dengan SANGAT TELITI dan ekstrak informasi PERSIS sesuai yang tertulis di CV. Jangan mengarang atau mengisi dengan data default seperti "John Doe" atau "Teknologi Informasi". Jika suatu field tidak ada di CV, isi dengan string kosong "".
+
+PENTING:
+- "nama": nama lengkap yang BENAR-BENAR ADA di CV
+- "skills": HANYA skill yang BENAR-BENAR disebutkan di CV (kemampuan, keahlian, tools)
+- "pengalaman": jabatan dan perusahaan yang ADA di CV (format: "Jabatan di Perusahaan")
+- "pendidikan": institusi dan jurusan yang ADA di CV
+- "bidang_utama": bidang kerja utama berdasarkan pengalaman & skill di CV (bukan asumsi)
+- "level": perkiraan level berdasarkan pengalaman yang ADA
+- "total_pengalaman": hitung dari tanggal mulai-selesai yang tertulis di CV
+
+Balas HANYA dengan JSON ini (tidak ada teks lain, tidak ada markdown, tidak ada penjelasan):
+{
+  "nama": "",
+  "ringkasan": "",
+  "skills": [],
+  "pengalaman": [],
+  "pendidikan": "",
+  "bahasa": [],
+  "level": "",
+  "bidang_utama": "",
+  "total_pengalaman": ""
+}
+${cvText ? '\n\nISI CV:\n' + cvText : ''}`;
 
   await delay(300);
-  setProgress('p1', 'done');
-  setProgress('p2', 'active');
+  setProgress('p1','done');
+  setProgress('p2','active');
 
   let profile;
   try {
-    const raw = await callAI(apiKey, profilePrompt, pdfBase64);
-    profile = JSON.parse(raw.replace(/```json|```/g, '').trim());
+    const raw = await callAI(apiKey, profilePrompt, b64pdf);
+    profile = JSON.parse(raw.replace(/```json|```/g,'').trim());
+    if (!profile.nama || profile.nama === 'John Doe') throw new Error('Ekstraksi tidak akurat');
   } catch(e) {
-    setProgress('p2', 'error');
-    showError('Gagal membaca CV. Pastikan API Key benar dan file valid. Error: ' + e.message);
-    analyzeBtn.disabled = false;
+    setProgress('p2','error');
+    document.getElementById('error-box').textContent = '⚠️ Gagal membaca CV dengan akurat. Pastikan file CV tidak terproteksi/scan. Error: ' + e.message;
+    document.getElementById('error-box').classList.add('show');
+    document.getElementById('analyze-btn').disabled = false;
     return;
   }
 
-  setProgress('p2', 'done');
-  setProgress('p3', 'active');
+  setProgress('p2','done');
+  setProgress('p3','active');
 
-  const jobTypeFilter = jobType === 'semua' ? 'semua tipe (full-time, remote, dll)' : jobType;
-  const jobPrompt = `Kamu adalah career consultant dan recruiter berpengalaman. Berdasarkan profil berikut, rekomendasikan ${jobCount} posisi loker yang paling cocok untuk wilayah ${location}.\n\nPROFIL:\n- Nama: ${profile.nama}\n- Bidang: ${profile.bidang_utama}\n- Level: ${profile.level}\n- Pengalaman total: ${profile.total_pengalaman}\n- Skills: ${(profile.skills||[]).join(', ')}\n- Pengalaman: ${(profile.pengalaman||[]).join(' | ')}\n- Pendidikan: ${profile.pendidikan}\n- Bahasa: ${(profile.bahasa||[]).join(', ')}\n- Tipe: ${jobTypeFilter}\n\nJawab HANYA JSON array (tidak ada teks lain, tidak ada markdown):\n[\n  {\n    "judul": "Job Title spesifik",\n    "perusahaan": "Nama perusahaan atau industri",\n    "lokasi": "Kota, Negara",\n    "tipe": "Full-time/Remote/dll",\n    "gaji": "range gaji realistis mata uang lokal",\n    "match": 90,\n    "alasan": "1-2 kalimat kenapa cocok untuk kandidat ini",\n    "skills_dibutuhkan": ["skill1","skill2","skill3"]\n  }\n]`;
+  const typeFilter = jobType === 'semua' ? 'semua tipe pekerjaan' : jobType;
+  const jobPrompt = `Kamu adalah career consultant dan recruiter berpengalaman.
+
+Berdasarkan profil kandidat berikut, rekomendasikan ${jobCount} posisi loker yang PALING COCOK untuk wilayah ${location}.
+
+PROFIL KANDIDAT:
+- Nama: ${profile.nama}
+- Bidang utama: ${profile.bidang_utama}
+- Level: ${profile.level}
+- Total pengalaman: ${profile.total_pengalaman}
+- Skills: ${(profile.skills||[]).join(', ')}
+- Pengalaman kerja: ${(profile.pengalaman||[]).join(' | ')}
+- Pendidikan: ${profile.pendidikan}
+- Bahasa: ${(profile.bahasa||[]).join(', ')}
+- Preferensi tipe: ${typeFilter}
+
+Pertimbangkan skills dan pengalaman NYATA kandidat. Jangan rekomendasikan posisi yang terlalu jauh dari background-nya.
+
+Balas HANYA dengan JSON array (tidak ada teks lain, tidak ada markdown):
+[
+  {
+    "judul": "Job Title yang spesifik dan realistis",
+    "perusahaan": "Tipe/nama perusahaan yang relevan",
+    "lokasi": "Kota, Negara",
+    "tipe": "Full-time/Remote/dll",
+    "gaji": "estimasi range gaji realistis dalam mata uang lokal",
+    "match": 85,
+    "alasan": "Penjelasan spesifik 1-2 kalimat berdasarkan skill dan pengalaman kandidat",
+    "skills_dibutuhkan": ["skill1","skill2","skill3"]
+  }
+]`;
 
   let jobs;
   try {
     const raw2 = await callAI(apiKey, jobPrompt, null);
-    jobs = JSON.parse(raw2.replace(/```json|```/g, '').trim());
+    jobs = JSON.parse(raw2.replace(/```json|```/g,'').trim());
   } catch(e) {
-    setProgress('p3', 'error');
-    showError('Gagal generate rekomendasi loker. Coba lagi. Error: ' + e.message);
-    analyzeBtn.disabled = false;
+    setProgress('p3','error');
+    document.getElementById('error-box').textContent = '⚠️ Gagal generate rekomendasi loker. Coba lagi. Error: ' + e.message;
+    document.getElementById('error-box').classList.add('show');
+    document.getElementById('analyze-btn').disabled = false;
     return;
   }
 
-  setProgress('p3', 'done');
-  setProgress('p4', 'active');
+  setProgress('p3','done');
+  setProgress('p4','active');
   await delay(400);
-  setProgress('p4', 'done');
+  setProgress('p4','done');
   setStep(4);
 
-  renderProfile(profile, location);
+  renderProfile(profile);
   renderJobs(jobs, profile, location);
 
   document.getElementById('profile-section').classList.add('show');
   document.getElementById('reset-section').classList.add('show');
   document.getElementById('progress-wrap').classList.remove('show');
-  analyzeBtn.disabled = false;
-  analyzeBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px;"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.65"/></svg> Analisis Ulang`;
+  document.getElementById('analyze-btn').disabled = false;
+  document.getElementById('analyze-btn').innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px;"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.65"/></svg> Analisis Ulang`;
   showToast(`✓ Ditemukan ${jobs.length} loker yang cocok!`);
 }
 
-function renderProfile(p, location) {
+function renderProfile(p) {
   document.getElementById('profile-grid').innerHTML = `
     <div class="profile-item"><div class="profile-item-label">Nama</div><div class="profile-item-value">${p.nama||'—'}</div></div>
     <div class="profile-item"><div class="profile-item-label">Bidang</div><div class="profile-item-value">${p.bidang_utama||'—'}</div></div>
@@ -606,13 +736,11 @@ function renderJobs(jobs, profile, location) {
   const loc = encodeURIComponent(location);
   jobs.forEach((job, i) => {
     const m = parseInt(job.match)||75;
-    const mc = m >= 85 ? 'match-high' : m >= 70 ? 'match-mid' : 'match-low';
-    const linkedinUrl = `https://www.linkedin.com/jobs/search/?keywords=${kw}&location=${loc}`;
-    const jobstreetUrl = `https://www.jobstreet.co.id/jobs/in-${loc}?q=${kw}`;
-    const card = document.createElement('div');
-    card.className = 'job-card';
-    card.style.animationDelay = `${i*60}ms`;
-    card.innerHTML = `
+    const mc = m>=85?'match-high':m>=70?'match-mid':'match-low';
+    const div = document.createElement('div');
+    div.className = 'job-card';
+    div.style.animationDelay = `${i*60}ms`;
+    div.innerHTML = `
       <div class="job-top">
         <div><div class="job-title">${job.judul}</div><div class="job-company">${job.perusahaan}</div></div>
         <span class="match-pill ${mc}">${m}% match</span>
@@ -626,31 +754,289 @@ function renderJobs(jobs, profile, location) {
       <div class="job-footer">
         <div class="chips-wrap">${(job.skills_dibutuhkan||[]).slice(0,4).map(s=>`<span class="chip chip-amber">${s}</span>`).join('')}</div>
         <div class="job-links">
-          <a class="link-btn" href="${jobstreetUrl}" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>JobStreet</a>
-          <a class="link-btn primary-link" href="${linkedinUrl}" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>LinkedIn</a>
+          <a class="link-btn" href="https://www.jobstreet.co.id/jobs/in-${loc}?q=${kw}" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>JobStreet</a>
+          <a class="link-btn pl" href="https://www.linkedin.com/jobs/search/?keywords=${kw}&location=${loc}" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>LinkedIn</a>
         </div>
       </div>`;
-    c.appendChild(card);
+    c.appendChild(div);
   });
 }
 
 function resetAll() {
   cvData = null; fileType = ''; fileInput.value = '';
-  fileSelected.classList.remove('show');
+  document.getElementById('file-selected').classList.remove('show');
   document.getElementById('profile-section').classList.remove('show');
   document.getElementById('reset-section').classList.remove('show');
   document.getElementById('progress-wrap').classList.remove('show');
+  document.getElementById('error-box').classList.remove('show');
   document.getElementById('jobs-container').innerHTML = '';
-  hideError();
-  analyzeBtn.disabled = true;
-  analyzeBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Analisis CV &amp; Cari Loker`;
-  setStep(1);
-  ['p1','p2','p3','p4'].forEach(id => setProgress(id, 'idle'));
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  document.getElementById('analyze-btn').disabled = true;
+  document.getElementById('analyze-btn').innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Analisis CV &amp; Cari Loker`;
+  setStep(1); ['p1','p2','p3','p4'].forEach(id => setProgress(id,'idle'));
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
-function cap(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
-function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+// ═══════════════════════════════════
+// CV MAKER
+// ═══════════════════════════════════
+let expEntries = [], eduEntries = [], certEntries = [];
+
+function addEntry(type) {
+  const id = Date.now();
+  if (type === 'exp') {
+    expEntries.push({ id, jabatan:'', perusahaan:'', periode:'', lokasi:'', bullets:[''] });
+  } else if (type === 'edu') {
+    eduEntries.push({ id, institusi:'', jurusan:'', periode:'', lokasi:'', bullets:[''] });
+  } else {
+    certEntries.push({ id, nama:'', penerbit:'', tahun:'', deskripsi:'' });
+  }
+  renderEntries();
+}
+
+function removeEntry(type, id) {
+  if (type === 'exp') expEntries = expEntries.filter(e => e.id !== id);
+  else if (type === 'edu') eduEntries = eduEntries.filter(e => e.id !== id);
+  else certEntries = certEntries.filter(e => e.id !== id);
+  renderEntries();
+}
+
+function updateEntry(type, id, field, val) {
+  const arr = type==='exp' ? expEntries : type==='edu' ? eduEntries : certEntries;
+  const e = arr.find(x => x.id === id);
+  if (e) { e[field] = val; updatePreview(); }
+}
+
+function addBullet(type, id) {
+  const arr = type==='exp' ? expEntries : eduEntries;
+  const e = arr.find(x => x.id === id);
+  if (e) { e.bullets.push(''); renderEntries(); }
+}
+
+function updateBullet(type, id, idx, val) {
+  const arr = type==='exp' ? expEntries : eduEntries;
+  const e = arr.find(x => x.id === id);
+  if (e) { e.bullets[idx] = val; updatePreview(); }
+}
+
+function removeBullet(type, id, idx) {
+  const arr = type==='exp' ? expEntries : eduEntries;
+  const e = arr.find(x => x.id === id);
+  if (e && e.bullets.length > 1) { e.bullets.splice(idx,1); renderEntries(); }
+}
+
+function renderEntries() {
+  renderExpEdu('exp', expEntries, document.getElementById('exp-entries'));
+  renderExpEdu('edu', eduEntries, document.getElementById('edu-entries'));
+  renderCert();
+  updatePreview();
+}
+
+function renderExpEdu(type, arr, container) {
+  container.innerHTML = '';
+  arr.forEach(e => {
+    const label1 = type==='exp' ? 'Jabatan' : 'Nama Institusi';
+    const label2 = type==='exp' ? 'Perusahaan' : 'Jurusan/Program';
+    const f1 = type==='exp' ? 'jabatan' : 'institusi';
+    const f2 = type==='exp' ? 'perusahaan' : 'jurusan';
+    const div = document.createElement('div');
+    div.className = 'entry-block';
+    div.innerHTML = `
+      <button class="remove-entry" onclick="removeEntry('${type}',${e.id})">×</button>
+      <div class="input-row" style="margin-bottom:8px;">
+        <div class="input-group" style="margin:0;"><label>${label1}</label><input type="text" value="${e[f1]||''}" oninput="updateEntry('${type}',${e.id},'${f1}',this.value)" placeholder="${label1}..." /></div>
+        <div class="input-group" style="margin:0;"><label>${label2}</label><input type="text" value="${e[f2]||''}" oninput="updateEntry('${type}',${e.id},'${f2}',this.value)" placeholder="${label2}..." /></div>
+      </div>
+      <div class="input-row" style="margin-bottom:8px;">
+        <div class="input-group" style="margin:0;"><label>Periode</label><input type="text" value="${e.periode||''}" oninput="updateEntry('${type}',${e.id},'periode',this.value)" placeholder="Mei 2022 – Nov 2025" /></div>
+        <div class="input-group" style="margin:0;"><label>Lokasi</label><input type="text" value="${e.lokasi||''}" oninput="updateEntry('${type}',${e.id},'lokasi',this.value)" placeholder="Jakarta, Indonesia" /></div>
+      </div>
+      <label style="font-size:12px;font-weight:500;color:var(--text-secondary);display:block;margin-bottom:4px;">Poin-poin kegiatan/prestasi</label>
+      <div id="bullets-${type}-${e.id}">
+        ${e.bullets.map((b,i) => `
+          <div class="bullet-item-wrap">
+            <input type="text" value="${b}" oninput="updateBullet('${type}',${e.id},${i},this.value)" placeholder="Tulis poin kegiatan atau prestasi..." />
+            <button onclick="removeBullet('${type}',${e.id},${i})">×</button>
+          </div>`).join('')}
+      </div>
+      <button class="add-btn" style="margin-top:4px;" onclick="addBullet('${type}',${e.id})">+ Tambah Poin</button>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function renderCert() {
+  const container = document.getElementById('cert-entries');
+  container.innerHTML = '';
+  certEntries.forEach(e => {
+    const div = document.createElement('div');
+    div.className = 'entry-block';
+    div.innerHTML = `
+      <button class="remove-entry" onclick="removeEntry('cert',${e.id})">×</button>
+      <div class="input-row" style="margin-bottom:8px;">
+        <div class="input-group" style="margin:0;"><label>Nama Sertifikat</label><input type="text" value="${e.nama||''}" oninput="updateEntry('cert',${e.id},'nama',this.value)" placeholder="Nama sertifikat..." /></div>
+        <div class="input-group" style="margin:0;"><label>Penerbit</label><input type="text" value="${e.penerbit||''}" oninput="updateEntry('cert',${e.id},'penerbit',this.value)" placeholder="LinkedIn, Coursera, dll" /></div>
+      </div>
+      <div class="input-row">
+        <div class="input-group" style="margin:0;"><label>Tahun</label><input type="text" value="${e.tahun||''}" oninput="updateEntry('cert',${e.id},'tahun',this.value)" placeholder="Juni 2026" /></div>
+        <div class="input-group" style="margin:0;"><label>Deskripsi (opsional)</label><input type="text" value="${e.deskripsi||''}" oninput="updateEntry('cert',${e.id},'deskripsi',this.value)" placeholder="Singkat..." /></div>
+      </div>`;
+    container.appendChild(div);
+  });
+}
+
+function updatePreview() {
+  const nama = v('cv-nama');
+  const kota = v('cv-kota');
+  const hp = v('cv-hp');
+  const email = v('cv-email');
+  const linkedin = v('cv-linkedin');
+  const portfolio = v('cv-portfolio');
+  const tentang = v('cv-tentang');
+  const sTeknis = v('skill-teknis');
+  const sBisnis = v('skill-bisnis');
+  const sInter = v('skill-interpersonal');
+  const sBahasa = v('skill-bahasa');
+
+  if (!nama && !kota && expEntries.length===0 && eduEntries.length===0 && certEntries.length===0) {
+    document.getElementById('cv-preview-content').innerHTML = `<div style="text-align:center;color:#9D9B97;padding:3rem 1rem;font-size:13px;">Isi form di sebelah kiri untuk melihat preview CV</div>`;
+    return;
+  }
+
+  let html = `<div class="cv-preview-inner">`;
+
+  // Header
+  if (nama) html += `<div class="cv-name">${nama.toUpperCase()}</div>`;
+  const contacts = [kota, hp, email, linkedin, portfolio].filter(Boolean);
+  if (contacts.length) html += `<div class="cv-contact">${contacts.join(' | ')}</div>`;
+  html += `<hr class="cv-hr" />`;
+
+  // Tentang
+  if (tentang) {
+    html += `<div class="cv-section-title">Tentang Saya</div>`;
+    html += `<div class="cv-desc" style="margin-bottom:4px;">${tentang}</div>`;
+  }
+
+  // Pengalaman
+  if (expEntries.length > 0) {
+    html += `<div class="cv-section-title">Pengalaman Kerja</div>`;
+    expEntries.forEach(e => {
+      const title = e.jabatan || '';
+      const company = e.perusahaan || '';
+      const left = [title, company].filter(Boolean).join(' — ');
+      if (left || e.periode) html += `<div class="cv-entry-head"><span>${left}</span><span>${e.periode||''}</span></div>`;
+      if (e.lokasi) html += `<div class="cv-entry-sub"><span style="font-style:italic;">${e.lokasi}</span></div>`;
+      e.bullets.filter(b=>b.trim()).forEach(b => { html += `<div class="cv-bullet">${b}</div>`; });
+    });
+  }
+
+  // Pendidikan
+  if (eduEntries.length > 0) {
+    html += `<div class="cv-section-title">Pendidikan</div>`;
+    eduEntries.forEach(e => {
+      const left = e.institusi || '';
+      if (left || e.periode) html += `<div class="cv-entry-head"><span>${left}</span><span>${e.periode||''}</span></div>`;
+      if (e.jurusan || e.lokasi) html += `<div class="cv-entry-sub"><span>${e.jurusan||''}</span><span>${e.lokasi||''}</span></div>`;
+      e.bullets.filter(b=>b.trim()).forEach(b => { html += `<div class="cv-bullet">${b}</div>`; });
+    });
+  }
+
+  // Sertifikasi
+  if (certEntries.length > 0) {
+    html += `<div class="cv-section-title">Sertifikasi & Lisensi</div>`;
+    certEntries.forEach(e => {
+      if (e.nama || e.penerbit) {
+        html += `<div class="cv-entry-head"><span>${e.nama||''}</span><span>${e.tahun||''}</span></div>`;
+        if (e.penerbit) html += `<div class="cv-entry-sub"><span>${e.penerbit}</span></div>`;
+        if (e.deskripsi) html += `<div class="cv-desc">${e.deskripsi}</div>`;
+      }
+    });
+  }
+
+  // Keahlian
+  const skillRows = [
+    { label:'Teknis', val:sTeknis },
+    { label:'Bisnis & Finance', val:sBisnis },
+    { label:'Interpersonal', val:sInter },
+    { label:'Bahasa', val:sBahasa },
+  ].filter(s => s.val);
+
+  if (skillRows.length > 0) {
+    html += `<div class="cv-section-title">Keahlian</div>`;
+    skillRows.forEach(s => {
+      html += `<div class="cv-skill-row"><span class="cv-skill-label">${s.label}: </span>${s.val}</div>`;
+    });
+  }
+
+  // Portfolio/LinkedIn
+  const links = [linkedin?`LinkedIn: ${linkedin}`:'', portfolio?`Portfolio: ${portfolio}`:''].filter(Boolean);
+  if (links.length) {
+    html += `<div class="cv-section-title">Tautan</div>`;
+    links.forEach(l => { html += `<div class="cv-desc">${l}</div>`; });
+  }
+
+  html += `</div>`;
+  document.getElementById('cv-preview-content').innerHTML = html;
+}
+
+function downloadCV() {
+  const nama = v('cv-nama') || 'CV';
+  const win = window.open('', '_blank');
+  const previewHtml = document.getElementById('cv-preview-content').innerHTML;
+  win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>CV - ${nama}</title>
+<style>
+* { margin:0;padding:0;box-sizing:border-box; }
+body { font-family: Arial, sans-serif; font-size: 11pt; color: #1A1916; padding: 2.5cm; }
+.cv-name { text-align:center;font-size:22pt;font-weight:700;letter-spacing:0.05em;margin-bottom:5px; }
+.cv-contact { text-align:center;font-size:9pt;color:#555;margin-bottom:8px; }
+.cv-hr { border:none;border-top:2px solid #1B56A6;margin:8px 0 12px; }
+.cv-section-title { font-size:9pt;font-weight:700;color:#1B56A6;letter-spacing:0.1em;text-transform:uppercase;border-bottom:1.5px solid #1B56A6;padding-bottom:2px;margin:12px 0 6px; }
+.cv-entry-head { display:flex;justify-content:space-between;font-weight:700;font-size:10.5pt;margin-bottom:2px; }
+.cv-entry-sub { display:flex;justify-content:space-between;font-style:italic;font-size:9pt;color:#555;margin-bottom:4px; }
+.cv-bullet { padding-left:14px;position:relative;font-size:9.5pt;color:#333;margin-bottom:2px;line-height:1.5; }
+.cv-bullet::before { content:"•";position:absolute;left:3px; }
+.cv-desc { font-size:9.5pt;color:#555;margin-bottom:3px; }
+.cv-skill-row { font-size:9.5pt;margin-bottom:4px; }
+.cv-skill-label { font-weight:700; }
+@media print { body { padding:1.5cm; } }
+</style></head><body>${previewHtml}</body></html>`);
+  win.document.close();
+  setTimeout(() => win.print(), 500);
+}
+
+// ─── LOAD SAMPLE DATA (Damar) ───
+function loadDamarData() {
+  document.getElementById('cv-nama').value = 'Damar Fatah Mubin';
+  document.getElementById('cv-kota').value = 'Jakarta Barat, DKI Jakarta';
+  document.getElementById('cv-hp').value = '+62 895 3236 67979';
+  document.getElementById('cv-email').value = 'damarfm49@gmail.com';
+  document.getElementById('cv-linkedin').value = 'linkedin.com/in/damarfm';
+  document.getElementById('cv-portfolio').value = 'damarfolio-yq5hd2gh.manus.space';
+  document.getElementById('cv-tentang').value = 'Profesional muda dengan latar belakang retail, teknologi, dan keuangan. Berpengalaman sebagai Shift Leader di FamilyMart dan aktif sebagai Certified Funded Trader yang mengelola portofolio $5.000.';
+  document.getElementById('skill-teknis').value = 'Microsoft Office, Excel, Administrasi, Analisis Data';
+  document.getElementById('skill-bisnis').value = 'Financial Markets, Forex Trading, Business Analysis, Investment Risk Management';
+  document.getElementById('skill-interpersonal').value = 'Customer Service, Public Speaking, Teamwork, Kepemimpinan';
+  document.getElementById('skill-bahasa').value = 'Bahasa Indonesia (Native), Bahasa Inggris (Fungsional)';
+
+  expEntries = [{ id:1, jabatan:'Pelayan Toko & Shift Leader', perusahaan:'PT. Fajar Mitra Indah (FamilyMart)', periode:'Mei 2022 – November 2025', lokasi:'Jakarta, Indonesia',
+    bullets:['Memimpin shift toko dan mengkoordinasikan tim operasional harian.','Mengelola hubungan pelanggan sesuai standar pelayanan perusahaan.','Menjalankan administrasi harian: pemesanan stok, pencatatan waste, dan berita acara.','Menjaga kualitas produk sesuai standar perusahaan.'] }];
+  eduEntries = [{ id:2, institusi:'SMKN 54 Jakarta', jurusan:'Teknik Kendaraan Ringan', periode:'Juli 2018 – Juni 2021', lokasi:'Jakarta, Indonesia',
+    bullets:['Aktif dalam komunitas IoT sekolah.','Membantu divisi humas pengelolaan website resmi sekolah.'] }];
+  certEntries = [
+    { id:3, nama:'Finance & Accounting', penerbit:'IBMI Berlin, Jerman', tahun:'November 2025', deskripsi:'Sertifikasi kompetensi internasional keuangan dan akuntansi.' },
+    { id:4, nama:'Business Analysis & Process Management', penerbit:'Coursera', tahun:'Juni 2026', deskripsi:'Credential ID: FLTZYY4BHOSP' },
+    { id:5, nama:'Investment Risk Management', penerbit:'Coursera', tahun:'Juni 2026', deskripsi:'Credential ID: VVRMFF26WQMM' },
+    { id:6, nama:'Cybersecurity Awareness: Terminologi Keamanan Siber', penerbit:'LinkedIn Learning', tahun:'Juni 2026', deskripsi:'' },
+    { id:7, nama:'Pengantar Rekayasa Perintah untuk AI Generatif', penerbit:'LinkedIn Learning', tahun:'Juni 2026', deskripsi:'' },
+    { id:8, nama:'Dasar-Dasar Keuangan', penerbit:'LinkedIn Learning', tahun:'Juni 2026', deskripsi:'' },
+    { id:9, nama:'Strategi Keuangan untuk Pemimpin Bisnis', penerbit:'LinkedIn Learning', tahun:'Juni 2026', deskripsi:'' },
+  ];
+  renderEntries();
+  showToast('Data contoh sudah diisi!');
+}
+
+function v(id) { return (document.getElementById(id)?.value||'').trim(); }
+function cap(s) { return s ? s.charAt(0).toUpperCase()+s.slice(1) : s; }
+function delay(ms) { return new Promise(r => setTimeout(r,ms)); }
 </script>
 </body>
 </html>
