@@ -55,8 +55,6 @@
     .model-btn.selected .m-name { color: var(--accent); }
     .model-btn[data-model="gemini"].selected { border-color: #1a73e8; background: #e8f0fe; }
     .model-btn[data-model="gemini"].selected .m-name { color: #1a73e8; }
-    .model-btn[data-model="groq"].selected { border-color: var(--purple); background: var(--purple-light); }
-    .model-btn[data-model="groq"].selected .m-name { color: var(--purple); }
     .free-badge { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 99px; background: var(--green-light); color: var(--green); margin-left: 4px; }
 
     .api-input-wrap { margin-bottom: 1.5rem; }
@@ -166,11 +164,15 @@
     .meta-item svg { width: 13px; height: 13px; }
     .job-reason { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 10px 0; border-top: 1px solid var(--border); margin-top: 8px; }
     .job-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; flex-wrap: wrap; gap: 8px; }
-    .job-links { display: flex; gap: 6px; }
+    .job-links { display: flex; gap: 6px; flex-wrap: wrap; }
     .link-btn { display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 500; text-decoration: none; border: 1px solid var(--border); background: var(--surface); color: var(--text-primary); cursor: pointer; transition: all 0.15s; }
     .link-btn:hover { background: var(--surface2); }
     .link-btn.pl { background: var(--accent); color: white; border-color: var(--accent); }
     .link-btn svg { width: 12px; height: 12px; }
+    .link-btn.glints { background: #e8f5e9; color: #2e7d32; border-color: #a5d6a7; }
+    .link-btn.glints:hover { background: #c8e6c9; }
+    .link-btn.lokerid { background: #fff3e0; color: #e65100; border-color: #ffcc80; }
+    .link-btn.lokerid:hover { background: #ffe0b2; }
 
     .reset-section { display: none; text-align: center; padding: 1rem 0 0; }
     .reset-section.show { display: block; }
@@ -255,27 +257,23 @@
   <div class="main-card">
     <!-- MODEL -->
     <div class="form-label" style="margin-bottom:10px;">Pilih AI Model</div>
-    <div class="model-selector">
-      <div class="model-btn selected" data-model="gemini" onclick="selectModel('gemini')">
-        <div class="m-logo">🔵</div><div class="m-name">Gemini</div><div class="m-sub">Google<span class="free-badge">FREE</span></div>
+    <div style="display:flex;align-items:center;gap:10px;background:var(--accent-light);border:1.5px solid var(--accent);border-radius:var(--radius-md);padding:10px 14px;margin-bottom:1.5rem;">
+      <span style="font-size:20px;">🔵</span>
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--accent);">Google Gemini 2.5 Flash</div>
+        <div style="font-size:11px;color:var(--text-muted);">Gratis 1.500 request/hari · Tidak perlu kartu kredit</div>
       </div>
-      <div class="model-btn" data-model="groq" onclick="selectModel('groq')">
-        <div class="m-logo">⚡</div><div class="m-name">Groq</div><div class="m-sub">Llama 3<span class="free-badge">FREE</span></div>
-      </div>
-      <div class="model-btn" data-model="anthropic" onclick="selectModel('anthropic')">
-        <div class="m-logo">🟠</div><div class="m-name">Claude</div><div class="m-sub">Anthropic</div>
-      </div>
+      <span class="free-badge" style="margin-left:auto;">FREE</span>
     </div>
 
     <!-- API KEY -->
     <div class="api-input-wrap">
       <div class="api-label-row">
-        <label class="form-label" id="api-label" style="margin:0;">Google Gemini API Key</label>
-        <a class="api-link" id="api-link" href="https://aistudio.google.com/apikey" target="_blank">Dapatkan gratis →</a>
+        <label class="form-label" style="margin:0;">Google Gemini API Key</label>
+        <a class="api-link" href="https://aistudio.google.com/apikey" target="_blank">Dapatkan gratis →</a>
       </div>
       <input type="password" id="api-key" placeholder="AIzaSy..." autocomplete="off" />
-      <div style="font-size:12px;color:var(--text-muted);margin-top:5px;" id="api-hint">Gratis 1.500 request/hari · Google AI Studio · Tidak perlu kartu kredit</div>
-      <div style="font-size:11px;color:var(--amber);background:var(--amber-light);border-radius:6px;padding:5px 10px;margin-top:6px;display:none;" id="groq-note">⚡ Tips Groq: Upload CV dalam format <strong>TXT</strong> (bukan PDF) agar hasil lebih akurat — Groq belum support baca PDF.</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:5px;">Daftar di <a href="https://aistudio.google.com/apikey" target="_blank" style="color:var(--accent);">Google AI Studio</a> · Gratis · Tidak perlu kartu kredit</div>
     </div>
 
     <!-- STEPS -->
@@ -460,7 +458,7 @@
   </div>
 </div>
 
-<footer>CV Job Matcher · Mendukung Gemini, Groq, dan Claude · Data tidak disimpan di server manapun</footer>
+<footer>CV Job Matcher · Powered by Google Gemini 2.5 Flash · Loker dari Glints, Loker.id, JobStreet & LinkedIn · Data tidak disimpan di server manapun</footer>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -480,26 +478,7 @@ function showToast(msg, dur=3000) {
 }
 
 // ─── MODEL SELECTOR ───
-let selectedModel = 'gemini';
-const MODEL_CONFIG = {
-  gemini: { label: 'Google Gemini API Key', placeholder: 'AIzaSy...', link: 'https://aistudio.google.com/apikey', linkText: 'Dapatkan gratis →', hint: 'Gratis 1.500 request/hari · Google AI Studio · Tidak perlu kartu kredit' },
-  groq: { label: 'Groq API Key', placeholder: 'gsk_...', link: 'https://console.groq.com/keys', linkText: 'Dapatkan gratis →', hint: 'Gratis · Groq Console · Tidak perlu kartu kredit' },
-  anthropic: { label: 'Anthropic API Key', placeholder: 'sk-ant-api03-...', link: 'https://console.anthropic.com', linkText: 'Anthropic Console →', hint: 'Free credit $5 untuk akun baru' }
-};
-function selectModel(m) {
-  selectedModel = m;
-  document.querySelectorAll('.model-btn').forEach(b => b.classList.remove('selected'));
-  document.querySelector(`[data-model="${m}"]`).classList.add('selected');
-  const c = MODEL_CONFIG[m];
-  document.getElementById('api-label').textContent = c.label;
-  document.getElementById('api-key').placeholder = c.placeholder;
-  document.getElementById('api-link').href = c.link;
-  document.getElementById('api-link').textContent = c.linkText;
-  document.getElementById('api-hint').textContent = c.hint;
-  document.getElementById('api-key').value = '';
-  const note = document.getElementById('groq-note');
-  if (note) note.style.display = m === 'groq' ? 'block' : 'none';
-}
+const selectedModel = 'gemini';
 
 // ─── FILE UPLOAD ───
 let cvData = null, fileType = '';
@@ -619,9 +598,7 @@ Return: {"jobs":[{"judul":"Job Title","perusahaan":"Company type","lokasi":"City
 }
 
 async function callAI(apiKey, prompt, b64pdf) {
-  if (selectedModel === 'gemini') return callGemini(apiKey, prompt, b64pdf);
-  if (selectedModel === 'groq') return callGroq(apiKey, prompt);
-  return callAnthropic(apiKey, prompt, b64pdf);
+  return callGemini(apiKey, prompt, b64pdf);
 }
 
 // ─── ANALYSIS ───
@@ -644,18 +621,16 @@ async function startAnalysis() {
   setProgress('p1','active');
 
   const isPdf = fileType === 'pdf';
-  // Groq cannot read PDFs — only pass b64pdf to Gemini/Anthropic
-  const b64pdf = (isPdf && selectedModel !== 'groq') ? cvData : null;
-  const cvText = isPdf ? (selectedModel === 'groq' ? '[PDF uploaded - extract info from file name and available context]' : '') : cvData;
+  // Gemini supports PDF natively
+  const b64pdf = isPdf ? cvData : null;
+  const cvText = isPdf ? '' : cvData;
 
   // Build profile prompt
-  const profilePrompt = selectedModel === 'groq'
-    ? groqProfilePrompt(cvText)
-    : `You are a professional CV analyst. Read the CV carefully and extract EXACTLY what is written. Do NOT invent data. Return ONLY valid JSON, no other text, no markdown.
+  const profilePrompt = `You are a professional CV analyst. Read the CV carefully and extract EXACTLY what is written. Do NOT invent data. Return ONLY valid JSON, no other text, no markdown.
 
 {"nama":"","ringkasan":"","skills":[],"pengalaman":[],"pendidikan":"","bahasa":[],"level":"","bidang_utama":"","total_pengalaman":""}
 
-Rules: nama=exact full name, skills=only explicitly mentioned skills, pengalaman=array of "Title at Company", level=entry/junior/mid/senior, bidang_utama=2-3 word field.
+Rules: nama=exact full name from CV, skills=only explicitly mentioned skills, pengalaman=array of "Title at Company" strings, level=entry/junior/mid/senior based on years, bidang_utama=2-3 word main field.
 ${cvText ? '\n\nCV CONTENT:\n' + cvText : ''}`;
 
   await delay(300);
@@ -668,7 +643,7 @@ ${cvText ? '\n\nCV CONTENT:\n' + cvText : ''}`;
     const parsed = extractJSON(raw);
     profile = parsed.nama !== undefined ? parsed : (parsed.profile || Object.values(parsed)[0]);
     if (!profile || !profile.nama || profile.nama.trim() === '') {
-      throw new Error('Nama tidak terbaca dari CV. Jika pakai Groq, coba upload file TXT bukan PDF.');
+      throw new Error('Nama tidak terbaca dari CV. Pastikan file PDF tidak terproteksi/scan.');
     }
   } catch(e) {
     setProgress('p2','error');
@@ -684,9 +659,7 @@ ${cvText ? '\n\nCV CONTENT:\n' + cvText : ''}`;
   const typeFilter = jobType === 'semua' ? 'semua tipe pekerjaan' : jobType;
 
   // Build job prompt
-  const jobPrompt = selectedModel === 'groq'
-    ? groqJobPrompt(jobCount, location, typeFilter, profile)
-    : `You are a career consultant. Recommend ${jobCount} realistic jobs for "${location}". Return ONLY a valid JSON array, no other text.
+  const jobPrompt = `You are a career consultant. Recommend ${jobCount} realistic jobs for "${location}". Return ONLY a valid JSON array, no other text.
 
 Candidate: ${profile.nama}, ${profile.bidang_utama}, ${profile.level}, skills: ${(profile.skills||[]).join(', ')}, history: ${(profile.pengalaman||[]).join(' | ')}, education: ${profile.pendidikan}, type: ${typeFilter}
 
@@ -739,6 +712,7 @@ function renderJobs(jobs, profile, location) {
   document.getElementById('jobs-count').textContent = `${jobs.length} posisi ditemukan`;
   const c = document.getElementById('jobs-container');
   c.innerHTML = '';
+  const rawKw = encodeURIComponent(profile.bidang_utama||'');
   const kw = encodeURIComponent((profile.bidang_utama||'').replace(/ /g,'+'));
   const loc = encodeURIComponent(location);
   jobs.forEach((job, i) => {
@@ -761,8 +735,10 @@ function renderJobs(jobs, profile, location) {
       <div class="job-footer">
         <div class="chips-wrap">${(job.skills_dibutuhkan||[]).slice(0,4).map(s=>`<span class="chip chip-amber">${s}</span>`).join('')}</div>
         <div class="job-links">
-          <a class="link-btn" href="https://www.jobstreet.co.id/jobs/in-${loc}?q=${kw}" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>JobStreet</a>
-          <a class="link-btn pl" href="https://www.linkedin.com/jobs/search/?keywords=${kw}&location=${loc}" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>LinkedIn</a>
+          <a class="link-btn glints" href="https://glints.com/id/opportunities/jobs/explore?keyword=${rawKw}&country=ID&locationName=${loc}" target="_blank">🟢 Glints</a>
+          <a class="link-btn lokerid" href="https://loker.id/cari-lowongan?q=${rawKw}&l=${loc}" target="_blank">🟠 Loker.id</a>
+          <a class="link-btn" href="https://www.jobstreet.co.id/jobs/in-${loc}?q=${kw}" target="_blank">JobStreet</a>
+          <a class="link-btn pl" href="https://www.linkedin.com/jobs/search/?keywords=${kw}&location=${loc}" target="_blank">LinkedIn</a>
         </div>
       </div>`;
     c.appendChild(div);
